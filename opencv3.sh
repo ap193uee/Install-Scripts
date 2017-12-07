@@ -9,7 +9,7 @@ apt-get update
 apt-get upgrade
 
 echo "-----Installing Dependenices----"
-apt-get -y install build-essential cmake pkg-config libgtk-3-dev unzip git wget
+apt-get -y install build-essential cmake pkg-config unzip git wget libgtk-3-dev 
 
 echo "-----Installing Python libraries----"
 apt-get -y install python-dev python-numpy
