@@ -3,7 +3,7 @@ GSTREAMER=1
 FFMPEG=1
 QT5=1 
 CONTRIB=1
-version=3.3.0
+version=3.4.1
 
 apt-get update
 apt-get upgrade
@@ -15,7 +15,7 @@ echo "-----Installing Python libraries----"
 apt-get -y install python-dev python-numpy
 
 echo "-----Installing Image libraries----"
-apt-get -y install libtiff5-dev libjasper-dev libpng12-dev libjpeg-dev
+apt-get -y install libtiff5-dev libjasper-dev libpng12-dev libjpeg-dev zlib1g-dev libwebp-dev
 
 echo "-----Installing Linear Algebra libraries----"
 apt-get -y install libatlas-base-dev gfortran libeigen3-dev swig libtbb-dev yasm liblapacke-dev libatlas-dev libopenblas-dev
@@ -36,7 +36,7 @@ if [ $FFMPEG -eq 1 ]
 then    
     echo "-----Installing ffmpeg libraries-----"
     apt-get -y install libavcodec-dev libavformat-dev libswscale-dev libfaac-dev libtheora-dev \
-                        libvorbis-dev libxvidcore-dev libswresample-dev libx264-dev
+                        libvorbis-dev libxvidcore-dev libswresample-dev libavresample-dev libx264-dev
     cmake_ffmpeg=-DWITH_FFMPEG=ON
 else
     cmake_ffmpeg=-DWITH_FFMPEG=OFF
@@ -58,7 +58,8 @@ then
     cmake_cuda=-DWITH_CUDA=ON" "
     cmake_cuda+=-DENABLE_FAST_MATH=1" "
     cmake_cuda+=-DCUDA_FAST_MATH=1" "
-    cmake_cuda+=-DWITH_CUBLAS=1
+    cmake_cuda+=-DWITH_CUBLAS=1" "
+    cmake_cuda+=-DCUDA_ARCH_BIN=5.0,5.2,6.0,6.1
 else
     cmake_cuda=-DWITH_CUDA=OFF
 fi
@@ -71,7 +72,7 @@ then
 fi
 
 # Optional Dependencies
-# apt-get -y install libopenexr-dev zlib1g-dev libgphoto2-dev libmp3lame-dev 
+# apt-get -y install libopenexr-dev libgphoto2-dev libmp3lame-dev 
 # apt-get -y install python-tk libvtk5-qt4-dev
 
 #version="$(wget -q -O - http://sourceforge.net/projects/opencvlibrary/files/opencv-unix | egrep -m1 -o '\"[0-9](\.[0-9]+)+' | cut -c2-)"
@@ -107,9 +108,9 @@ cmake \
         $cmake_cuda \
         $cmake_contrib \
         -DBUILD_opencv_java=OFF \
-        -D INSTALL_C_EXAMPLES=ON \
-        -D INSTALL_PYTHON_EXAMPLES=ON \
-        -D BUILD_EXAMPLES=ON ..
+        -D INSTALL_C_EXAMPLES=OFF \
+        -D INSTALL_PYTHON_EXAMPLES=OFF \
+        -D BUILD_EXAMPLES=OFF ..
 make -j"$(nproc)"
 make install
 
