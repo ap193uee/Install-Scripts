@@ -1,6 +1,6 @@
 # Build-Scripts
 
-Build scripts for:
+Bash scripts for building packages listed below:
 * OpenCV
 * Caffe
 * Tensorflow

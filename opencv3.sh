@@ -3,22 +3,23 @@ GSTREAMER=1
 FFMPEG=1
 QT5=1 
 CONTRIB=1
-version=3.4.1
+version=3.4.6
 
 apt-get update
 apt-get upgrade
 
 echo "-----Installing Dependenices----"
-apt-get -y install build-essential cmake pkg-config unzip git wget libgtk-3-dev 
+apt-get -y install build-essential cmake pkg-config unzip git wget \
+           gcc-5 g++-5 libgtk-3-dev 
 
 echo "-----Installing Python libraries----"
 apt-get -y install python-dev python-numpy
 
 echo "-----Installing Image libraries----"
-apt-get -y install libtiff5-dev libjasper-dev libpng12-dev libjpeg-dev zlib1g-dev libwebp-dev
+apt-get -y install libtiff5-dev libpng-dev libjpeg-dev zlib1g-dev libwebp-dev
 
 echo "-----Installing Linear Algebra libraries----"
-apt-get -y install libatlas-base-dev gfortran libeigen3-dev swig libtbb-dev yasm liblapacke-dev libatlas-dev libopenblas-dev
+apt-get -y install libatlas-base-dev gfortran libeigen3-dev swig libtbb-dev yasm liblapacke-dev libopenblas-dev
 
 echo "-----Installing camera related libraries----"
 apt-get -y install libv4l-dev libdc1394-22-dev
@@ -26,7 +27,7 @@ apt-get -y install libv4l-dev libdc1394-22-dev
 if [ $QT5 -eq 1 ]
 then    
     echo "-----Installing QT5 libraries----"
-    apt-get -y install qtbase5-dev
+    apt-get -y install qtbase5-dev libqt5opengl5-dev
 else
     echo "-----Installing QT4 libraries-----"
     apt-get -y install libqt4-dev libqt4-opengl-dev
@@ -103,6 +104,7 @@ cmake \
         -D WITH_TBB=ON \
         -D WITH_QT=ON \
         -D WITH_OPENGL=ON \
+        -D OPENCV_ENABLE_NONFREE=ON \
         $cmake_gstreamer \
         $cmake_ffmpeg \
         $cmake_cuda \
@@ -110,6 +112,8 @@ cmake \
         -DBUILD_opencv_java=OFF \
         -D INSTALL_C_EXAMPLES=OFF \
         -D INSTALL_PYTHON_EXAMPLES=OFF \
+        -D CMAKE_C_COMPILER=gcc-5 \
+        -D CMAKE_CXX_COMPILER=g++-5 \
         -D BUILD_EXAMPLES=OFF ..
 make -j"$(nproc)"
 make install
